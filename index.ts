@@ -44,6 +44,11 @@ app.post('/clicks/', function (request, response) {
   response.send(responseData);
 });
 
+app.delete('/clicks/', function (request, response) {
+  clicks = 0;
+  response.send(200);
+});
+
 const port = process.env.PORT;
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
