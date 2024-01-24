@@ -20,8 +20,6 @@ app.use(cors());
 const redisClient = createClient();
 const connection = redisClient.connect();
 
-let clicks = 0;
-
 interface ClicksData {
   clicks: number;
 }
@@ -53,7 +51,6 @@ app.post('/clicks/', async function (request, response) {
   }
 
   const data: ClicksData = request.body;
-  clicks = data.clicks;
   const redis = await connection;
   await redis.set('clicks', data.clicks);
 
@@ -63,8 +60,9 @@ app.post('/clicks/', async function (request, response) {
   response.send(responseData);
 });
 
-app.delete('/clicks/', function (request, response) {
-  clicks = 0;
+app.delete('/clicks/', async function (request, response) {
+  const redis = await connection;
+  await redis.set('clicks', 0);
   response.send(200);
 });
 
